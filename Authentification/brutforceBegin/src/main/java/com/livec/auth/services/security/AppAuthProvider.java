@@ -10,6 +10,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.livec.auth.config.login.FailedLogEvent;
+import com.livec.auth.config.login.SuccessLogEvent;
 import com.livec.auth.models.User;
 
 // AuthenticationManager indique la méthode d'authentification
@@ -40,7 +41,7 @@ public class AppAuthProvider implements AuthenticationManager{
 			eventPublisher.publishEvent(new FailedLogEvent(this, name));
 			throw new BadCredentialsException("log/pass inconnu");
 		}
-		// vérifier que le mot est le bon
+		eventPublisher.publishEvent(new SuccessLogEvent(this, name));
 		return new UsernamePasswordAuthenticationToken(name, password, user.getAuthorities());
 	}
 
